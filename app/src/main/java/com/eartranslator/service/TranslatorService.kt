@@ -64,6 +64,10 @@ class TranslatorService : Service() {
         const val EXTRA_LANG_A = "lang_a"   // Language.code for Person A
         const val EXTRA_LANG_B = "lang_b"   // Language.code for Person B
 
+        /** Live pipeline status broadcast to the UI (no logcat needed to debug on-device). */
+        const val ACTION_STATUS = "com.eartranslator.STATUS"
+        const val EXTRA_MSG = "msg"
+
         /** ~480 ms of silence (15 × 32 ms frames) ends an utterance. */
         const val SILENCE_FRAMES_THRESHOLD = 15
 
@@ -150,10 +154,19 @@ class TranslatorService : Service() {
             capture.start(btManager.inputDeviceForSlot(Slot.PERSON_A))
             captureJob = scope.launch(Dispatchers.IO) { capture.captureLoop() }
             loopJob = scope.launch { runTurnLoop() }
+            status("Listening — speak now")
         }
     }
 
+    private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
+
+    /** Broadcasts a one-line pipeline status to the UI so it's visible without logcat. */
+    private fun status(msg: String) {
+        sendBroadcast(Intent(ACTION_STATUS).setPackage(packageName).putExtra(EXTRA_MSG, msg))
+    }
+
     private suspend fun initModels() {
+        status("Loading models…")
         vad = SileroVAD(this)
         asr = WhisperASR(this)
 
@@ -184,6 +197,7 @@ class TranslatorService : Service() {
             val speech = if (chunk.size == SileroVAD.FRAME_SAMPLES) vad.isSpeech(chunk) else false
 
             if (speech) {
+                if (!inSpeech) status("Hearing speech…")
                 inSpeech = true
                 silenceFrames = 0
                 for (s in chunk) buffer.add(s)
@@ -208,30 +222,31 @@ class TranslatorService : Service() {
         if (buffer.isEmpty()) return
         val pcm = ShortArray(buffer.size) { buffer[it] }
         buffer.clear()
+        status("Recognizing… (${pcm.size / 16000.0}s)")
 
         // Auto-detect which of the two configured languages was spoken.
-        val result = asr.transcribeAuto(pcm, listOf(langA.code, langB.code)) ?: return
+        val result = asr.transcribeAuto(pcm, listOf(langA.code, langB.code))
+        if (result == null) { status("ASR failed (model error)"); return }
         val text = result.text
-        if (text.isBlank()) return
+        if (text.isBlank()) { status("No words recognized"); return }
 
         // Route based on detected language: A spoke → translate to B, play in B's ear.
-        val (mt, tts, outSlot) = when (result.language) {
-            langA.code -> Triple(mtAtoB, ttsB, Slot.PERSON_B)
-            langB.code -> Triple(mtBtoA, ttsA, Slot.PERSON_A)
-            else -> {
-                Log.d(TAG, "Detected '${result.language}' is neither configured language; ignoring")
-                return
-            }
+        val (mt, tts, outSlot, speaker) = when (result.language) {
+            langA.code -> Quad(mtAtoB, ttsB, Slot.PERSON_B, "Person A (${langA.display})")
+            langB.code -> Quad(mtBtoA, ttsA, Slot.PERSON_A, "Person B (${langB.display})")
+            else -> { status("Heard '${result.language}' (not a chosen language)"); return }
         }
-        // Never log conversation CONTENT in release builds (privacy). Debug only.
+        status("🗣 $speaker: $text")
         if (BuildConfig.DEBUG) Log.d(TAG, "[lang=${result.language} → $outSlot] ASR: $text")
 
+        val listener = if (outSlot == Slot.PERSON_B) "Person B (${langB.display})" else "Person A (${langA.display})"
         val translated = mt.translate(text)
-        if (translated.isBlank()) return
+        if (translated.isBlank()) { status("Translation empty"); return }
+        status("→ $listener: $translated")
         if (BuildConfig.DEBUG) Log.d(TAG, "[$outSlot] MT: $translated")
 
         val floatPcm = tts.synthesize(translated)
-        if (floatPcm.isEmpty()) return
+        if (floatPcm.isEmpty()) { status("⚠ No voice output (phonemizer needed)"); return }
 
         val out = playback.floatToPcm16(floatPcm)
 
@@ -239,7 +254,9 @@ class TranslatorService : Service() {
         // own output. Playback duration ≈ samples / sample-rate.
         val durationMs = (out.size.toLong() * 1000L) / AudioPlaybackManager.TTS_SAMPLE_RATE
         muteCaptureUntilMs = System.currentTimeMillis() + durationMs + playbackTailMs
+        status("🔊 Speaking to $listener…")
         playback.play(outSlot, out)
+        status("Listening — speak now")
     }
 
     override fun onDestroy() {

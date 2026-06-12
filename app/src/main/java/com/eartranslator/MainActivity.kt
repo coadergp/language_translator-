@@ -56,6 +56,13 @@ class MainActivity : AppCompatActivity() {
             }
         }.toTypedArray()
 
+    // Receives live pipeline status from the service and shows it on screen.
+    private val statusReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: Intent?) {
+            intent?.getStringExtra(TranslatorService.EXTRA_MSG)?.let { setStatus(it) }
+        }
+    }
+
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
@@ -220,6 +227,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun setStatus(text: String) {
         binding.txtStatus.text = getString(R.string.status_fmt, text)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        ContextCompat.registerReceiver(
+            this, statusReceiver,
+            android.content.IntentFilter(TranslatorService.ACTION_STATUS),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        try { unregisterReceiver(statusReceiver) } catch (_: Exception) {}
     }
 
     override fun onDestroy() {
