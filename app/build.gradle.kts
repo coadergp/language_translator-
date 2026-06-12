@@ -127,8 +127,10 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-    // ONNX Runtime — on-device inference for VAD / ASR / MT / TTS
-    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.16.3")
+    // ONNX Runtime — on-device inference for VAD / ASR / MT / TTS.
+    // 1.20.x supports the newer ONNX IR/opset our models are exported with (older 1.16.3
+    // failed to load them).
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.20.0")
 
     // JSON parsing for vocab.json and piper .onnx.json configs
     implementation("org.json:json:20240303")

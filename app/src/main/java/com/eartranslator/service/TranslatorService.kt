@@ -140,8 +140,10 @@ class TranslatorService : Service() {
         scope.launch {
             try {
                 initModels()
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
+                // Surface the real error to the UI instead of freezing on the last step.
                 Log.e(TAG, "Model init failed", e)
+                status("⚠ Model load failed: ${e.message ?: e.javaClass.simpleName}")
                 stopSelf()
                 return@launch
             }
