@@ -1,0 +1,23 @@
+Permissive (no-GPL) phonemizer dictionaries go here, one folder per language:
+
+  models/g2p/en/lexicon.txt
+  models/g2p/es/lexicon.txt
+  ...
+
+Each lexicon.txt has one entry per line, TAB-separated:
+
+  word<TAB>IPA phoneme string
+  hello␉həˈloʊ
+  world␉wɜːld
+
+Rules:
+  - lowercase words; UTF-8.
+  - Lines starting with '#' are comments.
+  - The IPA must use the SAME phoneme symbols the target Piper voice expects (the keys of
+    its <voice>.onnx.json "phoneme_id_map"). For standard Piper voices that is eSpeak's
+    IPA set, so the safest way to build this file is to pre-generate it on your dev
+    machine for your app's vocabulary.
+
+If a lexicon exists for a language, PiperTTS uses it (no GPL code runs in the app). Words
+not in the lexicon are skipped. If no lexicon is present, PiperTTS falls back to eSpeak-ng
+(if bundled) and then to a char placeholder.

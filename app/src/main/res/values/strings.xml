@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">EarTranslator</string>
+    <string name="tagline">Real-time offline two-ear translator</string>
+    <string name="person_a">Person A</string>
+    <string name="person_b">Person B</string>
+    <string name="language">Language</string>
+    <string name="earbud">Earbud</string>
+    <string name="refresh_devices">Refresh Bluetooth devices</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="status_idle">Status: idle</string>
+    <string name="status_fmt">Status: %1$s</string>
+
+    <string name="disclosure_title">How EarTranslator uses your microphone</string>
+    <string name="disclosure_body">EarTranslator listens through your Bluetooth earbud microphone to translate speech in real time.\n\n• All processing happens on this device — speech recognition, translation, and voice are fully offline.\n• Your audio is never recorded, saved, or sent anywhere. This app has no internet access.\n• Bluetooth permissions are used only to find and route audio to your earbuds, never to determine your location.\n\nTap “I agree” to grant microphone and Bluetooth access.</string>
+    <string name="disclosure_agree">I agree</string>
+    <string name="disclosure_decline">Not now</string>
+
+    <string name="licenses_title">Open-source licenses</string>
+    <string name="open_licenses">Open-source licenses</string>
+    <string name="licenses_load_error">Could not load license notices.</string>
+
+    <string name="privacy_title">Privacy policy</string>
+    <string name="open_privacy">Privacy policy</string>
+    <string name="privacy_load_error">Could not load privacy policy.</string>
+</resources>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Microphone capture from the BT earbud -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Runtime BT permissions (Android 12+, API 31+) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- neverForLocation: we scan only to find audio headsets, never to derive location.
+         This keeps us out of the Play "Location" permission policy. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+
+    <!-- Legacy BT permission for API <= 30 -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+
+    <!-- Foreground service so capture keeps running with screen off -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+
+    <!-- Required to flip SCO on/off and route audio devices -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
+
+    <!-- NOTE: this app declares NO android.permission.INTERNET. It cannot send audio or
+         text off the device — translation is fully on-device. This is intentional and is
+         the strongest possible privacy guarantee for the Play Data Safety form. -->
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EarTranslator"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LicensesActivity"
+            android:exported="false"
+            android:label="@string/licenses_title"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".PrivacyActivity"
+            android:exported="false"
+            android:label="@string/privacy_title"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".service.TranslatorService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+    </application>
+
+</manifest>

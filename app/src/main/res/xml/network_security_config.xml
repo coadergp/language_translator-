@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Deny all cleartext (HTTP) traffic. The app ships with no INTERNET permission, but if the
+  optional model downloader is enabled, this guarantees model files can only be fetched
+  over HTTPS (defense-in-depth against MITM of model files).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

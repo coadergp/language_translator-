@@ -1,0 +1,57 @@
+EarTranslator — Open-source licenses & attributions
+
+EarTranslator runs entirely on your device using the open-source components and
+pre-trained models listed below. We thank their authors.
+
+
+────────────────────────────────────────────────────────────
+MODELS
+────────────────────────────────────────────────────────────
+
+Translation models — Helsinki-NLP / Opus-MT
+  Licensed under CC-BY 4.0.
+  © The Language Technology Research Group at the University of Helsinki.
+  Tiedemann, J. & Thottingal, S. (2020). "OPUS-MT — Building open translation
+  services for the World." Proceedings of EAMT 2020.
+  https://github.com/Helsinki-NLP/Opus-MT
+  Used under CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+  This use does not imply endorsement by the authors.
+
+Speech recognition — Whisper (OpenAI)
+  Licensed under the MIT License.
+  © OpenAI.
+  https://github.com/openai/whisper
+
+Voice activity detection — Silero VAD
+  Licensed under the MIT License.
+  © Silero Team.
+  https://github.com/snakers4/silero-vad
+
+Text-to-speech — Piper (rhasspy)
+  Piper engine licensed under the MIT License. © Michael Hansen / rhasspy.
+  Individual voices are trained on third-party datasets with their own licenses;
+  see each voice's MODEL_CARD at https://github.com/rhasspy/piper-voices
+  for its specific license and attribution.
+
+Phonemizer — eSpeak-ng  (only if bundled)
+  Licensed under the GNU General Public License v3.0.
+  https://github.com/espeak-ng/espeak-ng
+  If this build includes eSpeak-ng, the application is distributed under GPLv3 and the
+  corresponding source is available on request.
+
+
+────────────────────────────────────────────────────────────
+LIBRARIES
+────────────────────────────────────────────────────────────
+
+ONNX Runtime (Microsoft)              — MIT License
+AndroidX / Jetpack                    — Apache License 2.0
+Material Components for Android        — Apache License 2.0
+Kotlin & kotlinx.coroutines (JetBrains)— Apache License 2.0
+org.json                              — JSON License
+
+
+────────────────────────────────────────────────────────────
+
+Full license texts are available from each project's repository linked above.
+For the complete notices kept with the source, see THIRD_PARTY_NOTICES.md.

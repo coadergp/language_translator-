@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Legacy auto-backup rules (Android 11-). We exclude the extracted ONNX model cache from
+  cloud backup: it's large, regenerable from assets, and there is no user data to back up.
+-->
+<full-backup-content>
+    <exclude domain="file" path="." />
+</full-backup-content>

@@ -1,0 +1,34 @@
+# Gradle / build
+.gradle/
+build/
+*/build/
+local.properties
+
+# Signing — NEVER commit keystores or their passwords
+keystore.properties
+*.jks
+*.keystore
+
+# Large model assets are downloaded, not committed (see README)
+app/src/main/assets/models/**/*.onnx
+app/src/main/assets/models/**/*.spm
+app/src/main/assets/models/**/*.bin
+# keep the layout placeholder
+!app/src/main/assets/models/PLACE_MODELS_HERE.txt
+
+# Phonemizer lexicons (data; supply per language, see README)
+app/src/main/assets/models/g2p/**/lexicon.txt
+
+# eSpeak-ng native artifacts & data (large; GPLv3 — supply locally, see README)
+app/src/main/jniLibs/**/*.so
+app/src/main/cpp/include/espeak-ng/
+app/src/main/assets/espeak-ng-data/*
+!app/src/main/assets/espeak-ng-data/PLACE_ESPEAK_DATA_HERE.txt
+# keep placeholders
+!app/src/main/jniLibs/PLACE_ESPEAK_SO_HERE.txt
+!app/src/main/cpp/include/PLACE_ESPEAK_HEADERS_HERE.txt
+
+# IDE
+.idea/
+*.iml
+.DS_Store

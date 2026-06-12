@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ backup/transfer rules. The app stores no user data; the only on-disk files
+  are regenerable model caches, so we exclude internal storage from both cloud backup and
+  device-to-device transfer.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="." />
+    </device-transfer>
+</data-extraction-rules>

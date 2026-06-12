@@ -1,0 +1,16 @@
+Copy the entire contents of eSpeak-ng's "espeak-ng-data" directory here (phoneme tables,
+voices, dictionaries), so the files end up at:
+
+  app/src/main/assets/espeak-ng-data/phontab
+  app/src/main/assets/espeak-ng-data/phonindex
+  app/src/main/assets/espeak-ng-data/phondata
+  app/src/main/assets/espeak-ng-data/intonations
+  app/src/main/assets/espeak-ng-data/voices/...
+  app/src/main/assets/espeak-ng-data/lang/...
+  ... etc.
+
+At first run, EspeakPhonemizer copies this folder to internal storage and points
+espeak_Initialize at it. You only need the language data for the languages you ship to
+keep the size down.
+
+⚠️ eSpeak-ng (and this data) is GPLv3.

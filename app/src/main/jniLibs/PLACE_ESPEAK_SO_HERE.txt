@@ -1,0 +1,22 @@
+Drop the prebuilt eSpeak-ng shared library here, one per ABI:
+
+  app/src/main/jniLibs/arm64-v8a/libespeak-ng.so
+  app/src/main/jniLibs/armeabi-v7a/libespeak-ng.so   (optional, older 32-bit devices)
+
+You also need the headers under:
+  app/src/main/cpp/include/espeak-ng/speak_lib.h   (+ any headers it includes)
+
+and the runtime data under:
+  app/src/main/assets/espeak-ng-data/...
+
+When BOTH the .so and the header are present, app/build.gradle.kts auto-enables the
+NDK/CMake build of the JNI bridge (libeartranslator_espeak). Until then the app still
+builds and runs, and PiperTTS falls back to a placeholder phonemizer.
+
+How to obtain libespeak-ng.so for Android:
+  - Build eSpeak-ng with the Android NDK (CMake toolchain), or
+  - extract it from a project that already ships it for Android.
+  See README "Phonemizer (eSpeak-ng)".
+
+⚠️ eSpeak-ng is licensed GPLv3. Bundling it imposes GPLv3 obligations on the published
+app. See THIRD_PARTY_NOTICES.md.

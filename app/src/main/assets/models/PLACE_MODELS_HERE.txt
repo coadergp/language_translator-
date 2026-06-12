@@ -1,0 +1,30 @@
+Place ONNX model assets here following this exact layout (see ../../../../../README.md
+for the commands that produce each file):
+
+models/
+  silero_vad.onnx
+  whisper/
+    encoder_model.onnx
+    decoder_model.onnx
+    vocab.json
+  opus-mt/        (translation pivots through English: ship en-X and X-en only)
+    en-es/
+      encoder_model.onnx
+      decoder_model.onnx
+      source.spm
+      target.spm
+      vocab.json    (piece -> id map; required by the tokenizer)
+    es-en/
+      ...
+  piper/
+    en/
+      en_US-lessac-medium.onnx
+      en_US-lessac-medium.onnx.json
+    es/
+      es_ES-mls_10246-medium.onnx
+      es_ES-mls_10246-medium.onnx.json
+    ...
+
+These files are intentionally NOT committed (they are large). The .onnx/.spm/.json
+extensions are excluded from aapt compression in app/build.gradle.kts so they can be
+mmap-loaded at runtime.

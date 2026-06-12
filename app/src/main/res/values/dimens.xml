@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default (phones). Larger screens override these via values-sw600dp / -sw720dp,
+         which widen the horizontal padding so content stays a readable column width on
+         tablets instead of stretching edge-to-edge. -->
+    <dimen name="screen_padding_horizontal">20dp</dimen>
+    <dimen name="screen_padding_vertical">20dp</dimen>
+    <dimen name="space_section">20dp</dimen>
+
+    <dimen name="text_title">26sp</dimen>
+    <dimen name="text_tagline">14sp</dimen>
+    <dimen name="text_section">16sp</dimen>
+    <dimen name="text_status">15sp</dimen>
+</resources>

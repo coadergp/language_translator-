@@ -1,0 +1,7 @@
+Place the eSpeak-ng public headers here so the JNI bridge can compile, e.g.:
+
+  app/src/main/cpp/include/espeak-ng/speak_lib.h
+  app/src/main/cpp/include/espeak-ng/espeak_ng.h   (if referenced)
+
+These come from the eSpeak-ng source tree (src/include/espeak-ng/). They must match the
+version of libespeak-ng.so you put under app/src/main/jniLibs/<abi>/.

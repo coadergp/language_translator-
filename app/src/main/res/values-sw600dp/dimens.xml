@@ -1,0 +1,12 @@
+<resources>
+    <!-- 7"+ tablets / large phones in landscape: wider side margins keep the form a
+         comfortable column instead of full-bleed; slightly larger type. -->
+    <dimen name="screen_padding_horizontal">72dp</dimen>
+    <dimen name="screen_padding_vertical">32dp</dimen>
+    <dimen name="space_section">24dp</dimen>
+
+    <dimen name="text_title">30sp</dimen>
+    <dimen name="text_tagline">16sp</dimen>
+    <dimen name="text_section">18sp</dimen>
+    <dimen name="text_status">16sp</dimen>
+</resources>

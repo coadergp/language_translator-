@@ -1,0 +1,11 @@
+<resources>
+    <!-- 10"+ tablets: even wider margins so the controls don't span the whole screen. -->
+    <dimen name="screen_padding_horizontal">140dp</dimen>
+    <dimen name="screen_padding_vertical">40dp</dimen>
+    <dimen name="space_section">28dp</dimen>
+
+    <dimen name="text_title">32sp</dimen>
+    <dimen name="text_tagline">17sp</dimen>
+    <dimen name="text_section">19sp</dimen>
+    <dimen name="text_status">17sp</dimen>
+</resources>
