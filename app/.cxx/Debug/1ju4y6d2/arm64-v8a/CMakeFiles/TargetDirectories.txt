@@ -1,3 +1,0 @@
-G:/Language_Translator/app/.cxx/Debug/1ju4y6d2/arm64-v8a/CMakeFiles/eartranslator_espeak.dir
-G:/Language_Translator/app/.cxx/Debug/1ju4y6d2/arm64-v8a/CMakeFiles/edit_cache.dir
-G:/Language_Translator/app/.cxx/Debug/1ju4y6d2/arm64-v8a/CMakeFiles/rebuild_cache.dir

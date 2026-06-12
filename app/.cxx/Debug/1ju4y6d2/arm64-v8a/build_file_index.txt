@@ -1,1 +1,0 @@
-G:\Language_Translator\app\src\main\cpp\CMakeLists.txt
