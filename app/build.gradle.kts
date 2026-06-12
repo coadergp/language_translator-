@@ -38,7 +38,9 @@ android {
         versionName = "1.0"
 
         if (espeakAvailable) {
-            ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a") }
+            // We ship a prebuilt libespeak-ng.so only for arm64-v8a (covers ~all modern
+            // phones); restrict ABIs so the NDK build doesn't fail looking for others.
+            ndk { abiFilters += "arm64-v8a" }
             externalNativeBuild { cmake { cppFlags += "-std=c++17" } }
         }
     }
