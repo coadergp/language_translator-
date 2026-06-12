@@ -151,6 +151,7 @@ class TranslatorService : Service() {
             // Bring up SCO and routing.
             btManager.openProfiles {
                 btManager.startSco()
+                status("Audio route: ${btManager.activeCommDeviceName}")
                 // Pin each direction's playback to the OPPOSITE earbud.
                 playback.prepareTrack(Slot.PERSON_B, btManager.outputDeviceForSlot(Slot.PERSON_B))
                 playback.prepareTrack(Slot.PERSON_A, btManager.outputDeviceForSlot(Slot.PERSON_A))

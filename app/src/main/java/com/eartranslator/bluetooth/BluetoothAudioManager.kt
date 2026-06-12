@@ -162,29 +162,59 @@ class BluetoothAudioManager(private val context: Context) {
 
     // region SCO lifecycle -------------------------------------------------------
 
+    /** Name of the BT communication device actually selected (for status/diagnostics). */
+    @Volatile var activeCommDeviceName: String = "none"
+        private set
+
     /**
-     * Turns on the SCO voice link so AudioRecord can read the BT mic. On API 31+ the
-     * platform prefers communication-device APIs, but startBluetoothSco() remains the
-     * reliable cross-version path for forcing SCO up for capture.
+     * Routes both the microphone and voice playback to the Bluetooth earbud.
+     *
+     * On Android 12+ (API 31), `startBluetoothSco()` is deprecated and frequently does
+     * NOT work — the correct API is [AudioManager.setCommunicationDevice], which routes
+     * BOTH capture and playback to the chosen BT (SCO) device. Without it the mic falls
+     * back to the phone's built-in mic and playback never reaches the earbuds. We use the
+     * modern API on 31+ and the legacy SCO calls below it.
      */
-    @Suppress("DEPRECATION")
     fun startSco() {
         if (scoStarted) return
         audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-        audioManager.startBluetoothSco()
-        audioManager.isBluetoothScoOn = true
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val devices = audioManager.availableCommunicationDevices
+            val bt = devices.firstOrNull { it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO }
+            if (bt != null) {
+                val ok = audioManager.setCommunicationDevice(bt)
+                activeCommDeviceName = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) bt.productName?.toString() else null) ?: "BT-SCO"
+                Log.d(TAG, "setCommunicationDevice($activeCommDeviceName) -> $ok")
+            } else {
+                Log.w(TAG, "No BT-SCO communication device available; available=${devices.map { it.type }}")
+                activeCommDeviceName = "none(no SCO dev)"
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.startBluetoothSco()
+            @Suppress("DEPRECATION")
+            audioManager.isBluetoothScoOn = true
+            activeCommDeviceName = "BT-SCO(legacy)"
+        }
         scoStarted = true
-        Log.d(TAG, "Bluetooth SCO requested")
+        Log.d(TAG, "Comm audio started ($activeCommDeviceName)")
     }
 
-    @Suppress("DEPRECATION")
     fun stopSco() {
         if (!scoStarted) return
-        audioManager.isBluetoothScoOn = false
-        audioManager.stopBluetoothSco()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            audioManager.clearCommunicationDevice()
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.isBluetoothScoOn = false
+            @Suppress("DEPRECATION")
+            audioManager.stopBluetoothSco()
+        }
         audioManager.mode = AudioManager.MODE_NORMAL
         scoStarted = false
-        Log.d(TAG, "Bluetooth SCO stopped")
+        activeCommDeviceName = "none"
+        Log.d(TAG, "Comm audio stopped")
     }
 
     // endregion
