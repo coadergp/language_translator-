@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity() {
          */
         private const val MODEL_BASE_URL =
             "https://raw.githubusercontent.com/coadergp/language_translator-/master"
+
+        // Dot colors: off (gray), connected (green), active/speaking (bright green).
+        private const val OFF = 0xFF9E9E9E.toInt()
+        private const val CONNECTED = 0xFF16A34A.toInt()
+        private const val ACTIVE = 0xFF22C55E.toInt()
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -56,11 +61,38 @@ class MainActivity : AppCompatActivity() {
             }
         }.toTypedArray()
 
-    // Receives live pipeline status from the service and shows it on screen.
+    // Receives live pipeline status from the service: updates text, progress bar, and the
+    // per-person activity dots.
     private val statusReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context?, intent: Intent?) {
-            intent?.getStringExtra(TranslatorService.EXTRA_MSG)?.let { setStatus(it) }
+            if (intent == null) return
+            intent.getStringExtra(TranslatorService.EXTRA_MSG)?.let { setStatus(it) }
+
+            // Progress bar: 0..100 determinate, -1 busy (indeterminate), -2 hide.
+            when (val p = intent.getIntExtra(TranslatorService.EXTRA_PROGRESS, TranslatorService.PROGRESS_HIDE)) {
+                TranslatorService.PROGRESS_HIDE -> binding.progress.visibility = android.view.View.GONE
+                TranslatorService.PROGRESS_BUSY -> {
+                    binding.progress.visibility = android.view.View.VISIBLE
+                    binding.progress.isIndeterminate = true
+                }
+                else -> {
+                    binding.progress.visibility = android.view.View.VISIBLE
+                    binding.progress.isIndeterminate = false
+                    binding.progress.setProgressCompat(p, true)
+                }
+            }
+
+            // Active-speaker dots: brighten whoever is speaking.
+            when (intent.getStringExtra(TranslatorService.EXTRA_SPEAKER)) {
+                "A" -> { setDot(binding.dotA, ACTIVE); setDot(binding.dotB, CONNECTED) }
+                "B" -> { setDot(binding.dotA, CONNECTED); setDot(binding.dotB, ACTIVE) }
+                "?" -> { setDot(binding.dotA, ACTIVE); setDot(binding.dotB, ACTIVE) }
+            }
         }
+    }
+
+    private fun setDot(view: android.view.View, color: Int) {
+        view.backgroundTintList = android.content.res.ColorStateList.valueOf(color)
     }
 
     private val permissionLauncher = registerForActivityResult(
@@ -213,6 +245,9 @@ class MainActivity : AppCompatActivity() {
         running = true
         binding.btnStart.isEnabled = false
         binding.btnStop.isEnabled = true
+        // Both earbuds assigned/connected → green dots.
+        setDot(binding.dotA, CONNECTED)
+        setDot(binding.dotB, CONNECTED)
         setStatus("Translating ${langA.display} ⇄ ${langB.display}")
     }
 
@@ -222,6 +257,9 @@ class MainActivity : AppCompatActivity() {
         running = false
         binding.btnStart.isEnabled = true
         binding.btnStop.isEnabled = false
+        binding.progress.visibility = android.view.View.GONE
+        setDot(binding.dotA, OFF)
+        setDot(binding.dotB, OFF)
         setStatus("Stopped")
     }
 

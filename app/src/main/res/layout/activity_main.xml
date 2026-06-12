@@ -66,13 +66,21 @@
                             android:contentDescription="@string/person_a" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="@string/person_a"
                             android:textStyle="bold"
                             android:textColor="@color/person_a"
                             android:textSize="@dimen/text_section" />
+
+                        <View
+                            android:id="@+id/dotA"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/dot"
+                            android:backgroundTint="#9E9E9E" />
                     </LinearLayout>
 
                     <TextView
@@ -145,13 +153,21 @@
                             android:contentDescription="@string/person_b" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="@string/person_b"
                             android:textStyle="bold"
                             android:textColor="@color/person_b"
                             android:textSize="@dimen/text_section" />
+
+                        <View
+                            android:id="@+id/dotB"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/dot"
+                            android:backgroundTint="#9E9E9E" />
                     </LinearLayout>
 
                     <TextView
@@ -196,10 +212,20 @@
                 app:iconGravity="textStart" />
 
             <!-- ===== Status ===== -->
-            <com.google.android.material.card.MaterialCardView
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:max="100"
+                android:visibility="gone"
+                app:trackCornerRadius="4dp"
+                app:indicatorColor="@color/brand" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="?attr/colorSecondaryContainer">

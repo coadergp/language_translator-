@@ -67,6 +67,10 @@ class TranslatorService : Service() {
         /** Live pipeline status broadcast to the UI (no logcat needed to debug on-device). */
         const val ACTION_STATUS = "com.eartranslator.STATUS"
         const val EXTRA_MSG = "msg"
+        const val EXTRA_PROGRESS = "progress"   // 0..100 determinate; -1 busy/indeterminate; -2 hide
+        const val EXTRA_SPEAKER = "speaker"     // "A", "B", or "" — which person is active
+        const val PROGRESS_BUSY = -1
+        const val PROGRESS_HIDE = -2
 
         /** ~480 ms of silence (15 × 32 ms frames) ends an utterance. */
         const val SILENCE_FRAMES_THRESHOLD = 15
@@ -160,27 +164,32 @@ class TranslatorService : Service() {
 
     private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 
-    /** Broadcasts a one-line pipeline status to the UI so it's visible without logcat. */
-    private fun status(msg: String) {
-        sendBroadcast(Intent(ACTION_STATUS).setPackage(packageName).putExtra(EXTRA_MSG, msg))
+    /** Broadcasts a one-line pipeline status + progress (+ active speaker) to the UI. */
+    private fun status(msg: String, progress: Int = PROGRESS_HIDE, speaker: String = "") {
+        sendBroadcast(
+            Intent(ACTION_STATUS).setPackage(packageName)
+                .putExtra(EXTRA_MSG, msg)
+                .putExtra(EXTRA_PROGRESS, progress)
+                .putExtra(EXTRA_SPEAKER, speaker)
+        )
     }
 
     private suspend fun initModels() {
-        status("Loading voice detector…")
+        status("Loading voice detector…", 5)
         vad = SileroVAD(this)
-        status("Loading speech recognizer…")
+        status("Loading speech recognizer…", 20)
         asr = WhisperASR(this)
 
-        status("Loading translator ${langA.code}→${langB.code}…")
+        status("Loading translator ${langA.code}→${langB.code}…", 40)
         mtAtoB = OpusMTTranslator(this).also { it.load(langA.code, langB.code) }
-        status("Loading translator ${langB.code}→${langA.code}…")
+        status("Loading translator ${langB.code}→${langA.code}…", 60)
         mtBtoA = OpusMTTranslator(this).also { it.load(langB.code, langA.code) }
 
-        status("Loading ${langB.display} voice…")
+        status("Loading ${langB.display} voice…", 80)
         ttsB = PiperTTS(this).also { it.load(langB.code, langB.piperVoice) }
-        status("Loading ${langA.display} voice…")
+        status("Loading ${langA.display} voice…", 92)
         ttsA = PiperTTS(this).also { it.load(langA.code, langA.piperVoice) }
-        status("Models ready")
+        status("Models ready", 100)
     }
 
     /**
@@ -203,7 +212,7 @@ class TranslatorService : Service() {
             val speech = if (chunk.size == SileroVAD.FRAME_SAMPLES) vad.isSpeech(chunk) else false
 
             if (speech) {
-                if (!inSpeech) status("Hearing speech…")
+                if (!inSpeech) status("Hearing speech…", PROGRESS_BUSY, "?")
                 inSpeech = true
                 silenceFrames = 0
                 for (s in chunk) buffer.add(s)
@@ -228,7 +237,7 @@ class TranslatorService : Service() {
         if (buffer.isEmpty()) return
         val pcm = ShortArray(buffer.size) { buffer[it] }
         buffer.clear()
-        status("Recognizing… (${pcm.size / 16000.0}s)")
+        status("Recognizing…", PROGRESS_BUSY)
 
         // Auto-detect which of the two configured languages was spoken.
         val result = asr.transcribeAuto(pcm, listOf(langA.code, langB.code))
@@ -237,18 +246,20 @@ class TranslatorService : Service() {
         if (text.isBlank()) { status("No words recognized"); return }
 
         // Route based on detected language: A spoke → translate to B, play in B's ear.
-        val (mt, tts, outSlot, speaker) = when (result.language) {
-            langA.code -> Quad(mtAtoB, ttsB, Slot.PERSON_B, "Person A (${langA.display})")
-            langB.code -> Quad(mtBtoA, ttsA, Slot.PERSON_A, "Person B (${langB.display})")
+        // speakerTag: which person card to light up (the one who spoke).
+        val (mt, tts, outSlot, speakerTag) = when (result.language) {
+            langA.code -> Quad(mtAtoB, ttsB, Slot.PERSON_B, "A")
+            langB.code -> Quad(mtBtoA, ttsA, Slot.PERSON_A, "B")
             else -> { status("Heard '${result.language}' (not a chosen language)"); return }
         }
-        status("🗣 $speaker: $text")
+        val speaker = if (speakerTag == "A") "Person A (${langA.display})" else "Person B (${langB.display})"
+        status("🗣 $speaker: $text", PROGRESS_BUSY, speakerTag)
         if (BuildConfig.DEBUG) Log.d(TAG, "[lang=${result.language} → $outSlot] ASR: $text")
 
         val listener = if (outSlot == Slot.PERSON_B) "Person B (${langB.display})" else "Person A (${langA.display})"
         val translated = mt.translate(text)
         if (translated.isBlank()) { status("Translation empty"); return }
-        status("→ $listener: $translated")
+        status("→ $listener: $translated", PROGRESS_BUSY, speakerTag)
         if (BuildConfig.DEBUG) Log.d(TAG, "[$outSlot] MT: $translated")
 
         val floatPcm = tts.synthesize(translated)
@@ -260,7 +271,7 @@ class TranslatorService : Service() {
         // own output. Playback duration ≈ samples / sample-rate.
         val durationMs = (out.size.toLong() * 1000L) / AudioPlaybackManager.TTS_SAMPLE_RATE
         muteCaptureUntilMs = System.currentTimeMillis() + durationMs + playbackTailMs
-        status("🔊 Speaking to $listener…")
+        status("🔊 Speaking to $listener…", PROGRESS_BUSY, speakerTag)
         playback.play(outSlot, out)
         status("Listening — speak now")
     }
