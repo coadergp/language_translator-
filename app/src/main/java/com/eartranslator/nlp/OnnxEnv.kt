@@ -24,8 +24,11 @@ object OnnxEnv {
     fun defaultSessionOptions(): OrtSession.SessionOptions {
         return OrtSession.SessionOptions().apply {
             setIntraOpNumThreads(2)
-            setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT)
-            // NNAPI could be added here for hardware accel; left to CPU for portability.
+            // BASIC_OPT keeps session creation fast on-device. ALL_OPT runs many extra
+            // graph fusions at load time, which is very slow for large quantized models
+            // (loading 6 of them can take minutes). Inference is marginally slower but the
+            // app becomes usable much faster.
+            setOptimizationLevel(OrtSession.SessionOptions.OptLevel.BASIC_OPT)
         }
     }
 

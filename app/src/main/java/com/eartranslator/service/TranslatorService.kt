@@ -166,15 +166,21 @@ class TranslatorService : Service() {
     }
 
     private suspend fun initModels() {
-        status("Loading models…")
+        status("Loading voice detector…")
         vad = SileroVAD(this)
+        status("Loading speech recognizer…")
         asr = WhisperASR(this)
 
+        status("Loading translator ${langA.code}→${langB.code}…")
         mtAtoB = OpusMTTranslator(this).also { it.load(langA.code, langB.code) }
+        status("Loading translator ${langB.code}→${langA.code}…")
         mtBtoA = OpusMTTranslator(this).also { it.load(langB.code, langA.code) }
 
+        status("Loading ${langB.display} voice…")
         ttsB = PiperTTS(this).also { it.load(langB.code, langB.piperVoice) }
+        status("Loading ${langA.display} voice…")
         ttsA = PiperTTS(this).also { it.load(langA.code, langA.piperVoice) }
+        status("Models ready")
     }
 
     /**
