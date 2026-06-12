@@ -74,12 +74,20 @@ class PiperTTS(private val context: Context) {
         }
     }
 
+    /** Set by [synthesize] to explain an empty result (surfaced in the UI status). */
+    var lastDiag: String = ""
+        private set
+
     fun synthesize(text: String): FloatArray {
-        val s = session ?: return FloatArray(0)
-        if (text.isBlank()) return FloatArray(0)
+        val s = session ?: run { lastDiag = "no model"; return FloatArray(0) }
+        if (text.isBlank()) { lastDiag = "blank text"; return FloatArray(0) }
 
         val ids = textToPhonemeIds(text)
-        if (ids.isEmpty()) return FloatArray(0)
+        if (ids.isEmpty()) {
+            lastDiag = "no phonemes (espeak=$espeakReady, voice=$espeakVoice, map=${phonemeIdMap.size})"
+            return FloatArray(0)
+        }
+        lastDiag = "phonemes=${ids.size} espeak=$espeakReady"
 
         val idArr = LongArray(ids.size) { ids[it].toLong() }
         val inputTensor = OnnxTensor.createTensor(env, LongBuffer.wrap(idArr), longArrayOf(1, idArr.size.toLong()))
@@ -103,6 +111,7 @@ class PiperTTS(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "TTS inference failed", e)
+            lastDiag = "tts onnx error: ${e.message ?: e.javaClass.simpleName}"
             FloatArray(0)
         } finally {
             inputTensor.close()

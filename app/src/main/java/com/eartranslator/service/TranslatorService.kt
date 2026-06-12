@@ -265,7 +265,7 @@ class TranslatorService : Service() {
         if (BuildConfig.DEBUG) Log.d(TAG, "[$outSlot] MT: $translated")
 
         val floatPcm = tts.synthesize(translated)
-        if (floatPcm.isEmpty()) { status("⚠ No voice output (phonemizer needed)"); return }
+        if (floatPcm.isEmpty()) { status("⚠ No voice: ${tts.lastDiag}"); return }
 
         val out = playback.floatToPcm16(floatPcm)
 
