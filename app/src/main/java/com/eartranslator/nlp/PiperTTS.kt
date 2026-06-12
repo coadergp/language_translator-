@@ -104,10 +104,11 @@ class PiperTTS(private val context: Context) {
                     "scales" to scalesTensor
                 )
             ).use { r ->
-                // output [1, 1, T]
-                @Suppress("UNCHECKED_CAST")
-                val out = r[0].value as Array<Array<FloatArray>>
-                out[0][0]
+                // Piper output can be [1,1,T] or [1,1,1,T] depending on the voice export.
+                // Flatten whatever nesting comes back to the raw waveform.
+                val pcm = flattenFloats(r[0].value)
+                lastDiag = "ok (${pcm.size} samples)"
+                pcm
             }
         } catch (e: Exception) {
             Log.e(TAG, "TTS inference failed", e)
@@ -118,6 +119,20 @@ class PiperTTS(private val context: Context) {
             lenTensor.close()
             scalesTensor.close()
         }
+    }
+
+    /** Flattens an arbitrarily-nested ONNX float output (3D or 4D) into a 1D waveform. */
+    private fun flattenFloats(value: Any?): FloatArray = when (value) {
+        is FloatArray -> value
+        is Array<*> -> {
+            val parts = value.map { flattenFloats(it) }
+            val total = parts.sumOf { it.size }
+            val out = FloatArray(total)
+            var off = 0
+            for (p in parts) { p.copyInto(out, off); off += p.size }
+            out
+        }
+        else -> FloatArray(0)
     }
 
     // region Phonemization -------------------------------------------------------
