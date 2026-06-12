@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.eartranslator.bluetooth.BluetoothAudioManager
 import com.eartranslator.bluetooth.BluetoothAudioManager.Slot
@@ -33,7 +36,8 @@ class MainActivity : AppCompatActivity() {
          * permission needed). If you set this, you MUST add the INTERNET permission and
          * update the privacy docs — see [ModelDownloader].
          */
-        private const val MODEL_BASE_URL = ""
+        private const val MODEL_BASE_URL =
+            "https://raw.githubusercontent.com/coadergp/language_translator-/master"
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -67,6 +71,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Android 15 (targetSdk 35) draws edge-to-edge by default; pad the content down
+        // by the status-bar height (and up from the nav bar) so nothing hides under the
+        // system bars / notch.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = bars.top, bottom = bars.bottom)
+            insets
+        }
+
         setupLanguageSpinners()
         binding.btnStart.setOnClickListener { startTranslation() }
         binding.btnStop.setOnClickListener { stopTranslation() }
@@ -76,6 +89,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnPrivacy.setOnClickListener {
             startActivity(Intent(this, PrivacyActivity::class.java))
+        }
+        binding.btnTerms.setOnClickListener {
+            startActivity(Intent(this, TermsActivity::class.java))
         }
         binding.btnStop.isEnabled = false
 

@@ -1,0 +1,53 @@
+TERMS OF SERVICE — EarTranslator
+Effective date: June 12, 2026
+
+By installing or using EarTranslator ("the app"), you agree to these Terms. If you do not
+agree, do not use the app.
+
+
+1. LICENSE
+You are granted a personal, non-exclusive, non-transferable license to use the app on
+devices you own or control, for personal, non-commercial use, subject to these Terms and
+the app-store terms under which you obtained it.
+
+
+2. ACCEPTABLE USE
+You agree not to reverse engineer the app (except as permitted by law) or use it for any
+unlawful purpose. Translation requires listening to speech via a microphone — YOU are
+responsible for complying with all laws on recording or processing other people's speech,
+including obtaining consent where your jurisdiction requires it.
+
+
+3. TRANSLATION ACCURACY — IMPORTANT
+The app provides automated, machine-generated translations that run on your device. They
+may be inaccurate or incomplete and are NOT a substitute for a professional human
+interpreter. Do NOT rely on the app for medical, legal, financial, emergency, or other
+high-stakes communication. You use translations at your own risk.
+
+
+4. NO WARRANTY
+The app is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, express or
+implied, including merchantability, fitness for a particular purpose, accuracy, and
+non-infringement. We do not warrant uninterrupted or error-free operation, or
+compatibility with all devices, Bluetooth hardware, or languages.
+
+
+5. LIMITATION OF LIABILITY
+To the maximum extent permitted by law, we are not liable for any indirect, incidental,
+special, or consequential damages, or any loss arising from mistranslation or reliance on
+the app. Our total liability shall not exceed the amount you paid for the app (which may
+be zero).
+
+
+6. THIRD-PARTY COMPONENTS
+The app uses open-source software and machine-learning models under their own licenses
+(see "Open-source licenses"). Your use of those components is subject to those licenses.
+
+
+7. CHANGES & TERMINATION
+We may update the app or these Terms at any time; continued use means acceptance. This
+license terminates automatically if you breach these Terms.
+
+
+8. CONTACT
+EarTranslator Support — see the support email on our Google Play listing.

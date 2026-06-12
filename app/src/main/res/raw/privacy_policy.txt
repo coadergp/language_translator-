@@ -1,53 +1,62 @@
-EarTranslator — Privacy Policy
-Last updated: 2026-06-12
+PRIVACY POLICY — EarTranslator
+Effective date: June 12, 2026
 
 
 SUMMARY
-EarTranslator does not collect, store, share, or transmit any personal data.
-All translation happens entirely on your device.
+EarTranslator performs all translation on your device and does NOT collect, store,
+transmit, or share any personal information. No accounts. No ads. No trackers. No
+internet permission.
 
 
-MICROPHONE / AUDIO
-• The app accesses your microphone (including a connected Bluetooth earbud
-  microphone) to translate speech as you speak.
-• Audio is processed entirely on your device, in memory, only to perform live
-  translation (speech recognition → translation → speech synthesis).
-• Audio is never recorded to storage, never kept after translation, and never
-  transmitted off the device.
-• The app declares NO internet permission and is technically incapable of sending
-  your audio or text anywhere.
+1. INFORMATION WE COLLECT
+None. The app has no user accounts, no analytics, no advertising identifiers, and no
+data-transmitting crash reporting.
 
 
-BLUETOOTH
-• Bluetooth permissions are used only to find paired audio devices (earbuds) and to
-  route translated audio to the correct earbud.
-• Bluetooth scanning is declared "neverForLocation"; the app does not use Bluetooth
-  to derive or infer your location.
+2. MICROPHONE & AUDIO
+• Audio from your device or Bluetooth earbud microphone is processed only in temporary
+  memory to recognize speech, translate it, and synthesize the translation.
+• Audio is never written to storage, never kept after a phrase is processed, and never
+  transmitted off your device.
+• Speech recognition, translation, and text-to-speech all run locally on your device.
 
 
-DATA WE COLLECT
-None. No analytics, no advertising, no accounts, no network calls.
+3. BLUETOOTH
+Bluetooth permissions are used only to find paired earbuds and route translated audio to
+the correct one. Scanning is flagged "neverForLocation"; the app does not use Bluetooth to
+determine your location.
 
 
-DATA WE SHARE
-None.
+4. PERMISSIONS
+• Microphone — capture speech to translate (core feature)
+• Bluetooth — find and route audio to your earbuds
+• Modify audio settings — manage the Bluetooth voice link
+• Foreground service (microphone) — keep translating during a conversation
 
 
-CHILDREN
-The app is a general-purpose utility and does not knowingly collect data from anyone,
-including children.
+5. DATA SHARING
+We do not share, sell, or disclose any data, because we collect none.
 
 
-ON-DEVICE FILES
-The app stores only translation model files on the device. These contain no personal
-data and are excluded from cloud backup.
+6. CHILDREN'S PRIVACY (COPPA)
+The app is a general-purpose utility, is not directed to children under 13, and does not
+knowingly collect data from anyone.
 
 
-CHANGES
-If this policy changes, the "Last updated" date above will change and the new version
-will be published at the same public URL used in the Play listing.
+7. YOUR RIGHTS (GDPR / CCPA)
+Because no personal data is collected or processed, there is no personal data to access,
+correct, delete, or port. We do not sell personal information.
 
 
-CONTACT
-For questions about this policy, contact the support email listed on our Google Play
-store listing.
+8. SECURITY
+All processing is local; no data leaves your device. The app declares no internet
+permission and cannot transmit your audio or text.
+
+
+9. CHANGES
+Material changes will be reflected by updating the effective date above and posting the
+revised policy at the URL in our Google Play listing.
+
+
+10. CONTACT
+EarTranslator Support — see the support email on our Google Play listing.

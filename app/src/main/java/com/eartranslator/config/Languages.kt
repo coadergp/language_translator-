@@ -25,7 +25,7 @@ enum class Language(
     // English is the pivot hub — keep it first.
     ENGLISH("en", "English", "en_US-lessac-medium"),
 
-    SPANISH("es", "Spanish", "es_ES-mls_10246-medium"),
+    SPANISH("es", "Spanish", "es_ES-davefx-medium"),
     FRENCH("fr", "French", "fr_FR-siwis-medium"),
     GERMAN("de", "German", "de_DE-thorsten-medium"),
     ITALIAN("it", "Italian", "it_IT-riccardo-x_low"),

@@ -5,6 +5,10 @@
     <!-- Microphone capture from the BT earbud -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- Internet is used ONLY to download translation model files on first run (over
+         HTTPS). User audio is still processed entirely on-device and never transmitted. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Runtime BT permissions (Android 12+, API 31+) -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <!-- neverForLocation: we scan only to find audio headsets, never to derive location.
@@ -67,6 +71,12 @@
             android:name=".PrivacyActivity"
             android:exported="false"
             android:label="@string/privacy_title"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".TermsActivity"
+            android:exported="false"
+            android:label="@string/terms_title"
             android:parentActivityName=".MainActivity" />
 
         <service

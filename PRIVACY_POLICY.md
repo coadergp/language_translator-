@@ -1,59 +1,101 @@
-# EarTranslator — Privacy Policy
+# Privacy Policy for EarTranslator
 
-_Last updated: 2026-06-12_
+**Effective date:** June 12, 2026
+**Last updated:** June 12, 2026
 
-EarTranslator ("the app") is a real-time, **fully offline** speech translator. This
-policy explains what the app does and does not do with your data. A privacy policy URL is
-**required** by Google Play because the app uses the microphone; you must host this text
-at a public URL and enter that URL in Play Console.
+This Privacy Policy describes how EarTranslator ("the App," "we," "us," or "our")
+handles information when you use the App. We are committed to protecting your privacy. In
+short: **EarTranslator performs all translation on your device and does not collect,
+store, transmit, or share any personal information.**
 
-## Summary
+This policy is provided to comply with the Google Play Developer Program Policies, the EU
+General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA),
+and the Children's Online Privacy Protection Act (COPPA).
 
-**EarTranslator does not collect, store, share, or transmit any personal data.**
+---
 
-## Microphone / audio
+## 1. Summary
 
-- The app accesses your microphone (including a connected Bluetooth earbud microphone) to
-  translate speech as you speak.
-- Audio is processed **entirely on your device, in memory**, for the sole purpose of
-  live translation (speech recognition → translation → speech synthesis).
-- Audio is **never recorded to storage, never retained after translation, and never
-  transmitted** off the device.
-- The app declares **no `INTERNET` permission** and is technically incapable of sending
-  your audio or text anywhere.
+| Question | Answer |
+|----------|--------|
+| Do we collect personal data? | **No** |
+| Do we share or sell data? | **No** |
+| Does the App use the internet? | **No** — it declares no internet permission |
+| Where is your audio processed? | **Entirely on your device, in memory** |
+| Is audio recorded or stored? | **No** |
+| Are there ads or trackers? | **No** |
+| Are there accounts or sign-in? | **No** |
 
-## Bluetooth
+## 2. Information We Collect
 
-- Bluetooth permissions are used **only** to discover paired audio devices (earbuds) and
-  route translated audio to the correct earbud.
-- Bluetooth scanning is declared with the `neverForLocation` flag; the app does **not**
-  use Bluetooth to derive or infer your location.
+**We do not collect any personal information.** The App has no user accounts, no
+analytics, no advertising identifiers, and no crash-reporting that transmits data.
 
-## Data we collect
+## 3. Microphone and Audio
 
-None. The app has no analytics, no advertising SDKs, no crash reporting that transmits
-data, no accounts, and no network calls.
+The App requires microphone access to perform real-time speech translation:
 
-## Data we share
+- Audio captured from your device or a connected Bluetooth earbud microphone is processed
+  **only in temporary memory** to recognize speech, translate it, and synthesize the
+  translated speech.
+- Audio is **never written to storage, never retained after a phrase is processed, and
+  never transmitted off your device.**
+- All processing (speech recognition, translation, and text-to-speech) is performed
+  **locally on your device** using on-device machine-learning models.
 
-None.
+## 4. Bluetooth
 
-## Children
+Bluetooth permissions are used solely to discover paired audio devices (earbuds/headsets)
+and to route translated audio to the correct device. Bluetooth scanning is declared with
+the `neverForLocation` flag; the App does **not** use Bluetooth to determine, infer, or
+collect your physical location.
 
-The app is a general-purpose utility and does not knowingly collect data from anyone,
-including children.
+## 5. Permissions We Request and Why
 
-## On-device files
+| Permission | Purpose |
+|------------|---------|
+| Microphone (`RECORD_AUDIO`) | Capture speech to translate (core feature) |
+| Bluetooth (`BLUETOOTH_CONNECT`, `BLUETOOTH_SCAN`) | Find and route audio to your earbuds |
+| Modify audio settings | Manage the Bluetooth voice link for capture/playback |
+| Foreground service (microphone) | Keep translating during an active conversation, including with the screen off |
 
-The app stores only translation model files (downloaded/bundled at install time) on the
-device. These contain no personal data and are excluded from cloud backup.
+We request the minimum permissions necessary and use them only for the purposes above.
 
-## Changes
+## 6. Data Sharing and Disclosure
 
-If this policy changes, the "Last updated" date above will change and the new version
-will be published at the same URL.
+We do not share, sell, rent, or disclose any personal information, because we do not
+collect any. No data is transmitted to us or to any third party.
 
-## Contact
+## 7. Data Retention and Deletion
 
-For questions about this policy, contact: **pguru.prakash@quest-global.com**
-_(replace with the published support email you use on your Play Console listing)._
+We do not store personal data, so there is nothing to retain or delete. On-device files
+are limited to translation model files, which contain no personal information and can be
+removed by uninstalling the App.
+
+## 8. Children's Privacy (COPPA)
+
+The App is a general-purpose utility and is **not directed to children under 13.** We do
+not knowingly collect personal information from anyone, including children.
+
+## 9. Your Rights (GDPR / CCPA)
+
+Because we do not collect or process personal data, there is no personal data to access,
+correct, port, restrict, or delete. We do not sell personal information.
+
+## 10. Security
+
+Translation happens locally and no data leaves your device, which eliminates the network
+risks associated with transmitting personal information. The App declares no internet
+permission and is technically incapable of sending your audio or text anywhere.
+
+## 11. Changes to This Policy
+
+We may update this Privacy Policy from time to time. Material changes will be reflected by
+updating the "Last updated" date above and posting the revised policy at the same URL
+referenced in our Google Play listing.
+
+## 12. Contact Us
+
+If you have questions about this Privacy Policy, contact:
+
+**EarTranslator Support** — _replace with your published support email on Google Play._
